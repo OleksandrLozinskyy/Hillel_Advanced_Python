@@ -1,10 +1,4 @@
-f_name = 'input.txt'
-o_name = 'output.txt'
-
-gen_range = [i for i in range(1, 101)]
-
-
-def get_denominator(file_name) -> int:
+def get_denominator(file_name: str) -> int:
     """
     Функция принимает имя файла, пытается открыть его для чтения. В случае
     успеха считывается содержимое и конвертируется в целое число. Если в файле
@@ -17,9 +11,8 @@ def get_denominator(file_name) -> int:
     try:
         with open(file_name, 'r', encoding='utf-8') as in_file:
             result = int(in_file.read())
-            if result == 0:
-                raise ZeroDivisionError
-            elif result in gen_range:
+            division_check = 1 / result
+            if result in gen_range:
                 return result
             else:
                 print(f"Incorrect number in file {file_name}")
@@ -32,7 +25,7 @@ def get_denominator(file_name) -> int:
         print(f"File {file_name} not contain number")
 
 
-def get_list_of_numbers(denominator) -> list:
+def get_list_of_numbers(denominator: int) -> list:
     """
     Функция проверяет делится ли число из списка на число передаваемое как
     параметр. Если остаток от деления 0, то число записывается в результирующий
@@ -45,7 +38,7 @@ def get_list_of_numbers(denominator) -> list:
     return res_range
 
 
-def get_sum(list_of_numbers) -> int:
+def get_sum(list_of_numbers: list) -> int:
     """
     Функция принимает как аргумент список чисел, возвращает сумму всех чисел
     списка
@@ -60,7 +53,7 @@ def get_sum(list_of_numbers) -> int:
     return sum(list_of_numbers)
 
 
-def write_result(number, name_of_result_file='out.txt'):
+def write_result(number: int, name_of_result_file: str = 'out.txt'):
     """
     Записывает число переданное в виде первого параметра в файл с названием,
     которое указано во втором параметре
@@ -72,18 +65,25 @@ def write_result(number, name_of_result_file='out.txt'):
             out_file.write(str(number))
             print(f"Success operation. File {name_of_result_file} writen")
     except IOError:
-        f"File {name_of_result_file} writing not success, please check " \
-            f"parameters"
+        print(f"File {name_of_result_file} writing not success, please check "
+              f"parameters")
 
 
-divider = get_denominator(f_name)
+if __name__ == "__main__":
 
-if type(divider) == int and divider != -1:
-    res_list = get_list_of_numbers(divider)
-    total = get_sum(res_list)
-    print(res_list)
-    print(total)
-    write_result(total, o_name)
-else:
-    print("Failure operation, please check parameters and try again. "
-          "Additional information about error you can see above")
+    f_name = 'input.txt'
+    o_name = 'output.txt'
+    gen_range = [i for i in range(1, 101)]
+
+    divider = get_denominator(f_name)
+
+    if type(divider) == int and divider != -1:
+        res_list = get_list_of_numbers(divider)
+        total = get_sum(res_list)
+        write_result(total, o_name)
+        # Print result
+        print(f"Result list is: {res_list}")
+        print(f"Sum of numbers in result list: {total}")
+    else:
+        print("Failure operation, please check parameters and try again. "
+              "Additional information about error you can see above")
